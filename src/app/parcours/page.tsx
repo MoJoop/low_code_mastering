@@ -14,14 +14,20 @@ import {
   getPrerequisStatus,
   getProjectsByBloc,
 } from "@/lib/projects";
-import { getCompletedProjectIds, getHeuresFaites, getProjectStatus } from "@/lib/progression";
+import {
+  getCompletedProjectIds,
+  getHeuresFaites,
+  getProgressMap,
+  getStatus,
+} from "@/lib/progression";
 
 export const metadata = {
   title: "Parcours — Low-Code Studio",
 };
 
-export default function ParcoursPage() {
-  const completedIds = getCompletedProjectIds();
+export default async function ParcoursPage() {
+  const progress = await getProgressMap();
+  const completedIds = getCompletedProjectIds(progress);
 
   return (
     <div className="min-h-screen bg-background">
@@ -56,7 +62,7 @@ export default function ParcoursPage() {
                       projet,
                       completedIds
                     );
-                    const heuresFaites = getHeuresFaites(projet.id);
+                    const heuresFaites = getHeuresFaites(progress, projet.id);
 
                     return (
                       <Link
@@ -70,7 +76,7 @@ export default function ParcoursPage() {
                               <CardTitle>
                                 {projet.id.toUpperCase()} · {projet.heures} h
                               </CardTitle>
-                              <StatusBadge status={getProjectStatus(projet.id)} />
+                              <StatusBadge status={getStatus(progress, projet.id)} />
                             </div>
                             <CardDescription>{projet.titre}</CardDescription>
                           </CardHeader>

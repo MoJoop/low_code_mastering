@@ -4,13 +4,26 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { SiteHeader } from "@/components/site-header";
 import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   getPrerequisStatus,
   getProjectById,
   getProjectIds,
   BLOC_LABELS,
 } from "@/lib/projects";
-import { getCompletedProjectIds, getHeuresFaites, getProjectStatus } from "@/lib/progression";
+import {
+  getCompletedProjectIds,
+  getHeuresFaites,
+  getProgressMap,
+  getStatus,
+} from "@/lib/progression";
+import { createClient } from "@/lib/supabase/server";
+import { demarrerProjet } from "../actions";
+
+// Personnalisée par utilisateur (statut, heures faites, bouton "Commencer") :
+// on garde generateStaticParams pour connaître les chemins valides, mais le
+// rendu doit rester dynamique à chaque requête, pas figé au build.
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() {
   return getProjectIds().map((id) => ({ id }));
@@ -35,9 +48,16 @@ export default async function ProjetPage({
   const projet = getProjectById(id);
   if (!projet) notFound();
 
-  const completedIds = getCompletedProjectIds();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const progress = await getProgressMap();
+  const completedIds = getCompletedProjectIds(progress);
   const { disponible, manquants } = getPrerequisStatus(projet, completedIds);
-  const heuresFaites = getHeuresFaites(projet.id);
+  const heuresFaites = getHeuresFaites(progress, projet.id);
+  const statut = getStatus(progress, projet.id);
 
   return (
     <div className="min-h-screen bg-background">
@@ -59,7 +79,7 @@ export default async function ProjetPage({
           <p className="text-sm text-muted-foreground">
             {projet.bloc} — {BLOC_LABELS[projet.bloc]}
           </p>
-          <StatusBadge status={getProjectStatus(projet.id)} />
+          <StatusBadge status={statut} />
         </div>
 
         <h1 className="mt-2 font-heading text-3xl text-foreground">
@@ -77,6 +97,23 @@ export default async function ProjetPage({
             {projet.outils.length > 0 ? projet.outils.join(" · ") : "Aucun outil imposé"}
           </Badge>
         </div>
+
+        {!user && (
+          <p className="mt-4 text-sm text-muted-foreground">
+            <Link href="/connexion" className="text-primary hover:underline">
+              Connectez-vous
+            </Link>{" "}
+            pour enregistrer votre progression sur ce projet.
+          </p>
+        )}
+
+        {user && statut === "a_venir" && (
+          <form action={demarrerProjet.bind(null, projet.id)} className="mt-4">
+            <Button type="submit" variant="cta">
+              Commencer ce projet
+            </Button>
+          </form>
+        )}
 
         <section className="mt-12">
           <h2 className="font-heading text-xl text-foreground">Brief</h2>
