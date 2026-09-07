@@ -39,6 +39,9 @@ yarn-error.log*
 # unrelated local python venv
 /env
 
+# document de référence OpenClassrooms (marketing, pas une source de contenu à versionner)
+/977-developpeur-low-code-fr-fr-standard.pdf
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

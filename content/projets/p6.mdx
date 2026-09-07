@@ -1,0 +1,40 @@
+---
+id: p6
+ordre: 6
+titre: "Initiez-vous à la sécurité et à la gestion des rôles sur votre application"
+bloc: BC02
+heures: 25
+resume: "Renforcez la sécurité de votre application en protégeant les données sensibles et en gérant les rôles. Implémentez des contrôles d'accès, limitez les permissions selon les utilisateurs, et assurez une expérience sécurisée et fiable pour tous."
+competences:
+  - "Configurer les authentifications et autorisations d'une application ou d'un site web"
+prerequis: [p5]
+outils: [xano, weweb]
+cours: []
+livrables:
+  - { id: demo-auth, type: url, titre: "Démo de l'authentification et des rôles" }
+soutenance:
+  duree: 20
+  attendus:
+    - "Expliquer le modèle de rôles retenu"
+    - "Démontrer qu'une restriction est appliquée côté serveur, pas seulement côté écran"
+---
+
+## Contexte
+
+Votre application manipule maintenant de vraies données échangées avec des
+services externes : il faut décider qui peut voir quoi, et qui peut modifier
+quoi.
+
+## Objectifs
+
+- Mettre en place l'inscription, la connexion et la déconnexion.
+- Définir un modèle de rôles simple (par exemple : visiteur, membre, admin).
+- Restreindre l'accès aux données et aux actions selon le rôle de
+  l'utilisateur connecté, côté Back-End et pas seulement côté Front-End.
+- Vérifier qu'un utilisateur non autorisé ne peut pas contourner la
+  restriction en appelant directement l'API.
+
+## Point d'attention
+
+Une restriction uniquement visuelle (un bouton caché) n'est pas une sécurité.
+La soutenance vérifiera que la règle est appliquée côté serveur.

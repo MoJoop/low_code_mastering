@@ -1,0 +1,44 @@
+---
+id: p3
+ordre: 3
+titre: "Mettez en place les bases du Back-End et développez le Front-End dynamique"
+bloc: BC02
+heures: 45
+resume: "Créez une application connectée en liant votre Front-End à une base Xano. Configurez des API dynamiques et personnalisez l'expérience utilisateur avec un onboarding fluide et une page d'accueil sur mesure."
+competences:
+  - "Concevoir un modèle de données"
+  - "Développer des interactions à l'aide d'outils low-code"
+prerequis: [p2]
+outils: [xano, weweb]
+cours:
+  - { titre: "Modélisez vos bases de données", duree: 8, niveau: "moyenne" }
+livrables:
+  - { id: mcd, type: fichier, titre: "Modèle conceptuel de données", format: [png, pdf] }
+  - { id: demo, type: url, titre: "Lien de l'app déployée" }
+soutenance:
+  duree: 30
+  attendus:
+    - "Justifier les cardinalités"
+    - "Expliquer un appel API de bout en bout"
+---
+
+## Contexte
+
+Les écrans du projet P2 sont statiques. Il est temps de leur donner une base
+de données réelle, avec de vraies relations entre les objets métier de votre
+application.
+
+## Objectifs
+
+- Concevoir un modèle conceptuel de données (entités, attributs, cardinalités)
+  puis le passer au modèle relationnel.
+- Implémenter ce modèle dans Xano et exposer les premiers endpoints API.
+- Brancher WeWeb sur ces endpoints : lister, créer, mettre à jour des données.
+- Construire un onboarding fluide et une page d'accueil personnalisée selon
+  les données de l'utilisateur connecté.
+
+## Ce qui sera évalué
+
+La soutenance blanche porte sur la justification des cardinalités choisies et
+sur votre capacité à retracer un appel API du clic utilisateur jusqu'à la
+réponse de la base de données.
